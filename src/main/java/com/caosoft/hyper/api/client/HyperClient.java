@@ -24,6 +24,21 @@ public class HyperClient {
     private String appKey="121454155";
     private String securityKey="e10adc3949ba59abbe56e057f20f883e";
 
+    //设置HyperApiServer服务器地址
+    public void setHyperApiServer(String apiBaseUrl){
+        this.apiBaseUrl= apiBaseUrl;
+    }
+
+    //设置Appkey
+    public void setAppKey(String appKey){
+        this.appKey= appKey;
+    }
+    //设置SecurityKey
+    public void setSecurityKey(String securityKey){
+        this.securityKey= securityKey;
+    }
+
+
     public Map<String, Object> getApiKeyQueryMap(String methodURL){
         Map<String, Object> queryMap =  new HashMap<>();
         ApiKeyEncrypt apiKeyEncrypt = new ApiKeyEncrypt(methodURL,appKey,securityKey);
