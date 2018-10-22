@@ -1,5 +1,6 @@
 package com.caosoft.hyper.api.client;
 
+import com.caosoft.hyper.api.client.service.HyperApiService;
 import com.caosoft.hyper.api.starter.po.HyperResult;
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
@@ -25,17 +26,20 @@ public class HyperClient {
     private String securityKey="e10adc3949ba59abbe56e057f20f883e";
 
     //设置HyperApiServer服务器地址
-    public void setHyperApiServer(String apiBaseUrl){
+    public HyperClient setHyperApiServer(String apiBaseUrl){
         this.apiBaseUrl= apiBaseUrl;
+        return this;
     }
 
     //设置Appkey
-    public void setAppKey(String appKey){
+    public HyperClient setAppKey(String appKey){
         this.appKey= appKey;
+        return this;
     }
     //设置SecurityKey
-    public void setSecurityKey(String securityKey){
+    public HyperClient setSecurityKey(String securityKey){
         this.securityKey= securityKey;
+        return this;
     }
 
 
@@ -55,8 +59,26 @@ public class HyperClient {
                 .target(apiType, apiBaseUrl);
     }
 
-    void doPost(String methodName, Map<String,Object> FormListMap){
+    public HyperResult doPost(String methodURL){
+        HyperApiService hyperApiService = this.target(HyperApiService.class);
+        ApiKeyEncrypt apiKeyEncrypt = new ApiKeyEncrypt(methodURL,appKey,securityKey);
+        Map<String,Object> objectMap = new HashMap<>();
+        objectMap.put("appkey",appKey);
+        objectMap.put("sign",apiKeyEncrypt.getSign());
+        objectMap.put("timestamp",apiKeyEncrypt.getTimeStamp());
+        return hyperApiService.doPost(methodURL,objectMap);
     }
+
+    public HyperResult doPost(String methodURL, Map<String,Object> objectMap){
+        HyperApiService hyperApiService = this.target(HyperApiService.class);
+        ApiKeyEncrypt apiKeyEncrypt = new ApiKeyEncrypt(methodURL,appKey,securityKey);
+        objectMap.put("appkey",appKey);
+        objectMap.put("sign",apiKeyEncrypt.getSign());
+        objectMap.put("timestamp",apiKeyEncrypt.getTimeStamp());
+        return hyperApiService.doPost(methodURL,objectMap);
+    }
+
+
 
 
     /**

@@ -1,5 +1,6 @@
 package com.caosoft.hyper.api.client.service;
 
+import com.caosoft.hyper.api.client.HyperClient;
 import com.caosoft.hyper.api.starter.po.HyperResult;
 import feign.Headers;
 import feign.Param;
@@ -21,15 +22,9 @@ import java.util.Map;
  */
 
 public interface HyperApiService {
-    @RequestLine("POST /index/demo")
-    HyperResult demo(@QueryMap Map<String, Object> queryMap);
-
-    @Headers("Content-Type: application/x-www-form-urlencoded")
-    @RequestLine("POST /index/demoForm")
-    HyperResult demoForm(@QueryMap Map<String, Object> queryMap);
-
 
     @RequestLine("POST {methodURL}")
     HyperResult doPost(@Param("methodURL") String methodURL, @QueryMap Map<String, Object> queryMap);
+
 
 }
